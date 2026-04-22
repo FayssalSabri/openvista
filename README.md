@@ -8,8 +8,8 @@ The repository is structured as a monorepo:
 
 - **`/frontend`**: Next.js application providing the user interface.
 - **`/backend`**: FastAPI service handling requests and task orchestration.
-- **`/models`**: Local storage for AI weights (ignored by git).
-- **`/data`**: Local storage for generated outputs and datasets (ignored by git).
+- **`/models`**: Local storage for AI weights.
+- **`/data`**: Local storage for generated outputs and datasets.
 
 ## Tech Stack
 
@@ -44,15 +44,6 @@ The repository is structured as a monorepo:
    ```bash
    docker-compose up --build
    ```
-
-
-## ☁️ Running on Google Colab
-
-If you don't have a local GPU, you can run OpenVista on Google Colab using our pre-configured notebook:
-
-1. Open the [OpenVista_Colab.ipynb](file:///c:/Users/fayss/DesctopLocal/Projects/OpenVista/OpenVista_Colab.ipynb) file.
-2. Upload it to [Google Colab](https://colab.research.google.com).
-3. Follow the instructions in the notebook to set up your environment and get a public URL via **Ngrok**.
 
 ## License
 
