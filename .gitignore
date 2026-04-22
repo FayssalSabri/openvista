@@ -58,7 +58,6 @@ venv/
 ENV/
 env/
 .env/
-scripts/
 python/
 
 # Unit test / coverage reports
