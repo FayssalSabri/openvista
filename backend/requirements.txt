@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pydantic
+sqlalchemy
+psycopg2-binary
+redis
+celery
+python-multipart
+python-dotenv
+torch
+diffusers
+transformers
+accelerate
+safetensors
+pillow
+httpx

@@ -1,0 +1,45 @@
+services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+      - ./models:/models
+      - ./data:/data
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - MODEL_PATH=/models
+      - DATA_PATH=/data
+      - FLUX_MODEL_ID=black-forest-labs/FLUX.1-schnell
+    depends_on:
+      - redis
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  worker:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+      - ./models:/models
+      - ./data:/data
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - MODEL_PATH=/models
+    depends_on:
+      - redis
+    command: celery -A worker.celery worker --loglevel=info --concurrency=1
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    command: npm run dev
