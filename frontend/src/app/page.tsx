@@ -17,7 +17,7 @@ export default function OpenVistaStudio() {
     setResultImage(null);
 
     try {
-      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '');
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || '/api').replace(/\/$/, '');
       console.log('Fetching from:', `${apiUrl}/generate`);
       
       const response = await fetch(`${apiUrl}/generate`, {
@@ -44,13 +44,13 @@ export default function OpenVistaStudio() {
     if (jobId && isGenerating) {
       interval = setInterval(async () => {
         try {
-          const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-          const response = await fetch(`${apiUrl.replace(/\/$/, '')}/status/${jobId}`);
+          const apiUrl = (process.env.NEXT_PUBLIC_API_URL || '/api').replace(/\/$/, '');
+          const response = await fetch(`${apiUrl}/status/${jobId}`);
           const data = await response.json();
           
           if (data.status === 'completed') {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-            setResultImage(`${apiUrl.replace(/\/$/, '')}${data.url}`);
+            const apiUrl = (process.env.NEXT_PUBLIC_API_URL || '/api').replace(/\/$/, '');
+            setResultImage(`${apiUrl}${data.url}`);
             setIsGenerating(false);
             setJobId(null);
             setStatus('');
