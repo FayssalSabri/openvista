@@ -17,17 +17,24 @@ export default function OpenVistaStudio() {
     setResultImage(null);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const response = await fetch(`${apiUrl.replace(/\/$/, '')}/generate`, {
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '');
+      console.log('Fetching from:', `${apiUrl}/generate`);
+      
+      const response = await fetch(`${apiUrl}/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt }),
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       setJobId(data.job_id);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Generation failed:', error);
-      setStatus('Connection error. Is the backend running?');
+      setStatus(`Error: ${error.message || 'Connection failed'}. Check backend status.`);
       setIsGenerating(false);
     }
   };

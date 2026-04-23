@@ -8,7 +8,14 @@ from worker import generate_image_task
 from celery.result import AsyncResult
 from dotenv import load_dotenv
 
+import logging
+from fastapi.staticfiles import StaticFiles
+
 load_dotenv()
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="OpenVista API", version="0.1.0")
 
@@ -19,6 +26,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Ensure data directory exists
+DATA_PATH = os.getenv("DATA_PATH", "./data")
+os.makedirs(DATA_PATH, exist_ok=True)
+
+# Mount static files for generated images
+app.mount("/data", StaticFiles(directory=DATA_PATH), name="data")
 
 # Mock database/state for MVP
 jobs = {}
